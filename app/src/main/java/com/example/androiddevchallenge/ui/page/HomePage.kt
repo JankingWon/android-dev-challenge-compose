@@ -11,9 +11,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.outlined.FilterList
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.*
@@ -21,12 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.androiddevchallenge.util.ComposeContent
 
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,11 +69,61 @@ fun CardItem(modifier: Modifier = Modifier, model: Model) {
 }
 
 @Composable
-fun ListItem(model: Model) {
+fun ListItem(modifier: Modifier = Modifier, model: Model) {
+    var itemChecked by remember { mutableStateOf(false) }
+    Row(
+        modifier = modifier
+            .height(64.dp)
+            .clickable {
+                itemChecked = !itemChecked
+            }
+            .padding(start = 16.dp)
+    ) {
+        GlideImage(
+            data = model.url,
+            contentDescription = model.title,
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(64.dp)
+                .align(Alignment.CenterVertically),
+            alignment = Alignment.Center,
+            contentScale = ContentScale.Crop
+        )
+        Column(modifier = Modifier.padding(start = 16.dp)) {
+            Text(
+                text = model.title,
+                color = MaterialTheme.colors.onPrimary,
+                style = MaterialTheme.typography.h2,
+                modifier = Modifier
+                    .paddingFromBaseline(top = 24.dp)
+            )
+            Text(
+                text = "This is a description",
+                color = MaterialTheme.colors.onPrimary,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier
+                    .paddingFromBaseline(top = 16.dp)
+            )
+        }
 
+        Spacer(modifier = Modifier.weight(1f))
+
+        Checkbox(
+            checked = itemChecked,
+            onCheckedChange = { itemChecked = it },
+            modifier = Modifier
+                .padding(end = 16.dp)
+                .size(24.dp)
+                .align(Alignment.CenterVertically),
+            colors = CheckboxDefaults.colors(
+                checkmarkColor = MaterialTheme.colors.onSecondary
+            )
+        )
+    }
 }
 
-val HomePage: ComposeContent = {
+@Composable
+fun HomeFragment() {
     Column {
         var searchText by remember { mutableStateOf("") }
 
@@ -171,28 +220,99 @@ val HomePage: ComposeContent = {
         LazyColumn(
             modifier = Modifier
                 .padding(top = 16.dp)
-                .height(136.dp)
                 .fillMaxWidth(),
         ) {
             item {
-                Repository.get().forEach {
-                    Box(modifier = Modifier.height(136.dp)) {
-                        ListItem(it)
-                    }
+                Repository.get().forEachIndexed { i, data ->
+                    ListItem(
+                        modifier = Modifier.padding(
+                            top = if (i == 0) 16.dp else 8.dp
+                        ),
+                        model = data
+                    )
                 }
             }
         }
     }
 }
 
+@Composable
+fun SimpleFragment(title: String) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Text(
+            text = title,
+            color = MaterialTheme.colors.onPrimary,
+            style = MaterialTheme.typography.h1,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+class TabConfig(
+    val name: String,
+    val normal: ImageVector,
+    val focus: ImageVector
+)
+
+val tabs = listOf(
+    TabConfig("Home", Icons.Outlined.Home, Icons.Filled.Home),
+    TabConfig("Favorites", Icons.Outlined.FavoriteBorder, Icons.Filled.Favorite),
+    TabConfig("Profile", Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle),
+    TabConfig("Cart", Icons.Outlined.ShoppingCart, Icons.Filled.ShoppingCart)
+)
+
+val HomePage: ComposeContent = {
+    Column {
+        var selectTab by remember {
+            mutableStateOf(0)
+        }
+        Box(modifier = Modifier.weight(1f)) {
+            if (selectTab == 0) {
+                HomeFragment()
+            } else {
+                SimpleFragment(title = tabs[selectTab].name)
+            }
+        }
+
+        BottomNavigation(
+            modifier = Modifier
+                .height(56.dp),
+            backgroundColor = MaterialTheme.colors.primary
+        ) {
+            tabs.onEachIndexed { i, data ->
+                BottomNavigationItem(
+                    selected = (selectTab == i),
+                    onClick = { selectTab = i },
+                    selectedContentColor = MaterialTheme.colors.onPrimary,
+                    icon = {
+                        Icon(
+                            imageVector = if (selectTab == i) data.focus else data.normal,
+                            contentDescription = data.name,
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                                .size(24.dp)
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = data.name,
+                            style = MaterialTheme.typography.caption
+                        )
+                    })
+            }
+        }
+    }
+
+}
+
 @Preview
 @Composable
 fun PreviewCardItem() {
-    ListItem(Repository.get()[0])
+    ListItem(model = Repository.get()[0])
 }
 
 @Preview
 @Composable
 fun PreviewListItem() {
-    ListItem(Repository.get()[0])
+    ListItem(model = Repository.get()[0])
 }
