@@ -25,72 +25,65 @@ import com.example.androiddevchallenge.R
 
 
 val WelcomePage: ComposeContent = {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colors.primary)
+    Image(
+        painter = painterResource(R.drawable.ic_welcome_bg),
+        contentDescription = "welcome_bg",
+        modifier = Modifier.fillMaxWidth(),
+        contentScale = ContentScale.FillWidth
+    )
+    Column(
+        Modifier.fillMaxSize()
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_welcome_bg),
-            contentDescription = "welcome_bg",
-            modifier = Modifier.fillMaxWidth(),
-            contentScale = ContentScale.FillWidth
+            painter = painterResource(R.drawable.ic_welcome_illos),
+            contentDescription = "welcome_illos",
+            modifier = Modifier
+                .padding(top = 72.dp)
+                .align(Alignment.End)
         )
-        Column(
-            Modifier.fillMaxSize()
+        //Bloom
+        Image(
+            painter = painterResource(R.drawable.ic_logo),
+            contentDescription = "logo",
+            modifier = Modifier
+                .padding(top = 48.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+        Text(
+            text = "Beautiful home garden solutions",
+            style = MaterialTheme.typography.subtitle1,
+            color = colorResource(id = R.color.text),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .paddingFromBaseline(top = 32.dp)
+        )
+        //注册
+        RoundButton(
+            text = "Create account",
+            modifier = Modifier
+                .padding(top = 40.dp, start = 16.dp, end = 16.dp)
+                .align(Alignment.CenterHorizontally)
         ) {
-            Image(
-                painter = painterResource(R.drawable.ic_welcome_illos),
-                contentDescription = "welcome_illos",
-                modifier = Modifier
-                    .padding(top = 72.dp)
-                    .align(Alignment.End)
-            )
-            //Bloom
-            Image(
-                painter = painterResource(R.drawable.ic_logo),
-                contentDescription = "logo",
-                modifier = Modifier
-                    .padding(top = 48.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-            Text(
-                text = "Beautiful home garden solutions",
-                style = MaterialTheme.typography.subtitle1,
-                color = colorResource(id = R.color.text),
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .paddingFromBaseline(top = 32.dp)
-            )
-            //注册
-            RoundButton(
-                text = "Create account",
-                modifier = Modifier
-                    .padding(top = 40.dp, start = 8.dp, end = 8.dp)
-                    .align(Alignment.CenterHorizontally)
-            ) {
-                //todo register
-            }
-            val context = LocalContext.current
-            //登录
-            Text(
-                text = "Log in",
-                style = MaterialTheme.typography.button,
-                color = colorResource(id = R.color.text_click),
-                modifier = Modifier
-                    .paddingFromBaseline(top = 40.dp)
-                    .align(Alignment.CenterHorizontally)
-                    .clickable {
-                        context.startActivity(
-                            Intent(
-                                context,
-                                LoginActivity::class.java
-                            )
-                        )
-                    }
-            )
+            //todo register
         }
-
+        val context = LocalContext.current
+        //登录
+        Text(
+            text = "Log in",
+            style = MaterialTheme.typography.button,
+            color = colorResource(id = R.color.text_click),
+            modifier = Modifier
+                .paddingFromBaseline(top = 40.dp)
+                .align(Alignment.CenterHorizontally)
+                .clickable {
+                    context.startActivity(
+                        Intent(
+                            context,
+                            LoginActivity::class.java
+                        )
+                    )
+                }
+        )
     }
 }
 

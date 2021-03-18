@@ -25,30 +25,37 @@ import androidx.compose.ui.unit.sp
 val typography = Typography(
     h1 = TextStyle(
         fontSize = 18.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
+        fontWeight = FontWeight.Bold
     ),
     h2 = TextStyle(
         fontSize = 15.sp,
-        letterSpacing = 0.15.sp
+        letterSpacing = 0.15.sp,
+        fontWeight = FontWeight.Bold
     ),
     subtitle1 = TextStyle(
         fontSize = 16.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
+        fontWeight = FontWeight.Light
     ),
     body1 = TextStyle(
         fontSize = 14.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
+        fontWeight = FontWeight.Light
     ),
     body2 = TextStyle(
         fontSize = 12.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
+        fontWeight = FontWeight.Light
     ),
     button = TextStyle(
         fontSize = 12.sp,
-        letterSpacing = 1.sp
+        letterSpacing = 1.sp,
+        fontWeight = FontWeight.SemiBold
     ),
     caption = TextStyle(
         fontSize = 12.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
+        fontWeight = FontWeight.SemiBold
     )
 )
