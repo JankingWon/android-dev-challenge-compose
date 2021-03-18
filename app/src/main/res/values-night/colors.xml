@@ -10,7 +10,7 @@
   the License.
   -->
 <resources>
-    <color name="text">#FF232323</color>
-    <color name="text_reverse">#FFFFFFFF</color>
-    <color name="text_click">#FF3F2C2C</color>
+    <color name="text">#FFFFFFFF</color>
+    <color name="text_reverse">#FF232323</color>
+    <color name="text_click">#FFFFFFFF</color>
 </resources>
